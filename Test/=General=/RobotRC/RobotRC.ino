@@ -1,5 +1,5 @@
 //#include <ESP8266WiFi.h>
-#include <GyverMotor.h> 
+#include <GyverMotor.h>
 
 class MotorSetup {
 public:
@@ -9,34 +9,65 @@ public:
   const int MOTOR_R2 = D6;
 };
 
+class WiFiSetup {
+public:
+  const char* NAME = "Timur's WiFi";
+  const char* PASS = "Password";
+  const int PORT = 80;
 
-// Объявляем моторы
+  void StatsShow() {
+    Serial.println("WiFi is Ready!");
+    Serial.print("SSID: ");
+    Serial.println(NAME);
+
+    Serial.print("Pass: ");
+    Serial.println(PASS);
+
+    Serial.print("IP: ");
+    Serial.println(WiFi.localIP());
+  }
+
+  void RequestRead() {
+  }
+};
+
+// Подготавливаем объекты
+WiFiSetup wifiSetup;
 MotorSetup MS;
 GMotor motorL(DRIVER2WIRE, MS.MOTOR_L1, MS.MOTOR_L2, LOW);
 GMotor motorR(DRIVER2WIRE, MS.MOTOR_R1, MS.MOTOR_R2, LOW);
+WiFiServer server(wifiSetup.PORT);
+
 
 void setup() {
   Serial.begin(115200);
   delay(10);
   pinMode(2, OUTPUT);
+
+  WiFi.persistent(false);
+  WiFi.begin(ssid, password);
+  wifiSetup.StatsShow();
 }
 
 void loop() {
-  MoveForward();
-  digitalWrite(2, 0);
-  delay(3000);
+  WiFiClient client = server.available();
+  if (!client) {
+    return;
+  }
+  while(!client.available()){
+    delay(1);
+  }
+  String req = client.readStringUntil('\r');
 
-  MoveRight();
-  digitalWrite(2, 1);
-  delay(3000);
+  if(req == "f")
+  {
+    MoveForward();
+  }
 
-  MoveLeft();
-  digitalWrite(2, 0);
-  delay(3000);
-
-  MoveBack();
-  digitalWrite(2, 1);
-  delay(3000);
+  else
+  {
+    MoveStop();
+  }
 }
 
 
