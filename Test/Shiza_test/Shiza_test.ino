@@ -4,28 +4,32 @@
 class MotorSetup {
 public:
   // Константы, пины, прочее
-  const int MOTOR_L1 = D5;
-  const int MOTOR_L2 = D6;
-  const int MOTOR_R1 = D7;
-  const int MOTOR_R2 = D8;
+  // const int MOTOR_L1 = D5;
+  // const int MOTOR_L2 = D6;
+  // const int MOTOR_R1 = D3;
+  // const int MOTOR_R2 = D4;
+
+  const int MOTOR_L1 = D0;
+  const int MOTOR_L2 = D7;
+  const int MOTOR_R1 = D5;
+  const int MOTOR_R2 = D6;
 };
 
 // Объявляем моторы
 MotorSetup motorSetup;
 GMotor motorL(DRIVER2WIRE, motorSetup.MOTOR_L1, motorSetup.MOTOR_L2, LOW);
-GMotor motorR(DRIVER2WIRE, motorSetup.MOTOR_R1, motorSetup.MOTOR_R2, LOW);
+GMotor motorR(DRIVER2WIRE, motorSetup.MOTOR_R1, motorSetup.MOTOR_R2, 0);
 
 void setup() {
   Serial.begin(115200);
   delay(10);
+  pinMode(2, OUTPUT);
 
   // Подготавливаем моторы
   // motorL.setMode(STOP);
   // motorL.setSpeed(255);
   // motorR.setMode(STOP);
   // motorL.setSpeed(255);
-
-  pinMode(2, OUTPUT);
 }
 
 void loop() {
