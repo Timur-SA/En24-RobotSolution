@@ -64,6 +64,21 @@ void loop() {
     MoveForward();
   }
 
+  else if(req == "b")
+  {
+    MoveBack();
+  }
+
+  else if(req == "r")
+  {
+    MoveRight();
+  }
+
+  else if(req == "l")
+  {
+    MoveLeft();
+  }
+
   else
   {
     MoveStop();
