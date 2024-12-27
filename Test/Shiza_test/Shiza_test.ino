@@ -11,35 +11,40 @@ public:
 };
 
 // Объявляем моторы
-//int dir;
 MotorSetup motorSetup;
 GMotor motorL(DRIVER2WIRE, motorSetup.MOTOR_L1, motorSetup.MOTOR_L2, LOW);
 GMotor motorR(DRIVER2WIRE, motorSetup.MOTOR_R1, motorSetup.MOTOR_R2, LOW);
-
 
 void setup() {
   Serial.begin(115200);
   delay(10);
 
   // Подготавливаем моторы
-  motorL.setMode(STOP);
-  motorL.setSpeed(255);
-  motorR.setMode(STOP);
-  motorL.setSpeed(255);
+  // motorL.setMode(STOP);
+  // motorL.setSpeed(255);
+  // motorR.setMode(STOP);
+  // motorL.setSpeed(255);
+
+  pinMode(2, OUTPUT);
 }
 
 void loop() {
   MoveForward();
-  delay(2000);
-  MoveStop();
-  delay(1000);
-  MoveRight();
+  digitalWrite(2, 0);
   delay(3000);
-  MoveLeft();
-  delay(2000);
-  MoveBack();
-}
 
+  MoveRight();
+  digitalWrite(2, 1);
+  delay(3000);
+
+  MoveLeft();
+  digitalWrite(2, 0);
+  delay(3000);
+
+  MoveBack();
+  digitalWrite(2, 1);
+  delay(3000);
+}
 
 
 void MoveForward() {
