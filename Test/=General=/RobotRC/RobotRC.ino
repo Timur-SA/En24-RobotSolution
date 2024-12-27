@@ -1,4 +1,4 @@
-//#include <ESP8266WiFi.h>
+#include <ESP8266WiFi.h>
 #include <GyverMotor.h>
 
 class MotorSetup {
@@ -32,11 +32,11 @@ public:
 };
 
 // Подготавливаем объекты
-WiFiSetup wifiSetup;
+WiFiSetup WS;
 MotorSetup MS;
 GMotor motorL(DRIVER2WIRE, MS.MOTOR_L1, MS.MOTOR_L2, LOW);
 GMotor motorR(DRIVER2WIRE, MS.MOTOR_R1, MS.MOTOR_R2, LOW);
-WiFiServer server(wifiSetup.PORT);
+WiFiServer server(WS.PORT);
 
 
 void setup() {
@@ -45,8 +45,13 @@ void setup() {
   pinMode(2, OUTPUT);
 
   WiFi.persistent(false);
-  WiFi.begin(ssid, password);
-  wifiSetup.StatsShow();
+  WiFi.begin(WS.NAME, WS.PASS);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(250);
+  }
+  WS.StatsShow();
+  server.begin();
 }
 
 void loop() {
@@ -54,35 +59,36 @@ void loop() {
   if (!client) {
     return;
   }
-  while(!client.available()){
+  while (!client.available()) {
     delay(1);
   }
   String req = client.readStringUntil('\r');
 
-  if(req == "f")
-  {
+
+  if (req.at(6) == "f") {
     MoveForward();
+    Serial.println("For");
   }
 
-  else if(req == "b")
-  {
+  else if (req.at(6) == "b") {
     MoveBack();
   }
 
-  else if(req == "r")
-  {
+  else if (req.at(6) == "r") {
     MoveRight();
   }
 
-  else if(req == "l")
-  {
+  else if (req.at(6) == "l") {
     MoveLeft();
   }
 
-  else
-  {
+  else {
     MoveStop();
   }
+
+  client.flush();
+  client.println("HTTP/1.1 200 OK");
+  Serial.println(req);
 }
 
 
