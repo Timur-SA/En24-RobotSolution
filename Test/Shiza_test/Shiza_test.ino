@@ -29,7 +29,7 @@ void setup() {
 }
 
 void loop() {
-  MoveForward();
+  MoveForward(); //!
   digitalWrite(2, 0);
   delay(3000);
 
@@ -37,7 +37,7 @@ void loop() {
   digitalWrite(2, 1);
   delay(3000);
 
-  MoveLeft();
+  MoveLeft(); //!
   digitalWrite(2, 0);
   delay(3000);
 
