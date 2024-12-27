@@ -5,6 +5,12 @@
 #include <ESP8266WiFi.h>
 #include "GyverMotor.h"
 
+class MotorSetup 
+{
+  public:
+    // Константы, пины, прочее
+};
+
 const char* ssid = "Timur's WiFi";
 const char* password = "Password";
 const int port = 80;
@@ -19,6 +25,7 @@ const int MOTOR_R1 = D7;
 const int MOTOR_R2 = D8;
 int dir;
 
+MotorSetup motorSetup;
 GMotor motorL(DRIVER2WIRE, MOTOR_L1, MOTOR_L2, LOW);
 GMotor motorR(DRIVER2WIRE, MOTOR_R1, MOTOR_R2, LOW);
 
