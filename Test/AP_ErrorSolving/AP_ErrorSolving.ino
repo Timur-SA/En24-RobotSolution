@@ -1,5 +1,3 @@
-// Стандартный IP:
-// 192.168.4.1
 #include <ESP8266WiFi.h>
 
 class WiFiSetup
@@ -50,46 +48,20 @@ void setup() {
   digitalWrite(D4, 0);
 }
 
-
-void loop() 
-{ 
+void loop() {
   WiFiClient client = server.available();
-  if (!client) {
-    return;
-  } 
-  Serial.println("!");
+  // if (!client) {
+  //   return;
+  // }
+  Serial.println("Новый клиент!");
 
   while(!client.available()){
     delay(1);
   }
 
-  Serial.println("!!!");
   String req = client.readStringUntil('\r');
+  Serial.print("Новый запрос: ");
   Serial.println(req);
-  client.flush();
-
-  if(req == "1")
-  {
-    digitalWrite(D4, 0);
-    delay(1000);
-    digitalWrite(D4, 1);
-  }
-  else if (req == "2")
-  {
-    digitalWrite(D4, 0);
-    delay(250);
-    digitalWrite(D4, 1);
-    delay(250);
-    digitalWrite(D4, 0);
-    delay(250);
-    digitalWrite(D4, 1);
-  }
-
-  else
-  {
-    digitalWrite(D4, 1);
-  }
-
-  client.flush();
   client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n <!DOCTYPE HTML>\r\n<html>\r\ OK!");
+  client.flush();
 }
