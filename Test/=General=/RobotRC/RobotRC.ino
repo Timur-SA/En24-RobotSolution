@@ -48,10 +48,11 @@ void setup() {
   WiFi.begin(WS.NAME, WS.PASS);
 
   while (WiFi.status() != WL_CONNECTED) {
-    delay(250);
+    delay(500);
+    Serial.print(".");
   }
-  WS.StatsShow();
   server.begin();
+    WS.StatsShow();
 }
 
 void loop() {
@@ -62,23 +63,24 @@ void loop() {
   while (!client.available()) {
     delay(1);
   }
+
   String req = client.readStringUntil('\r');
-
-
-  if (req.at(6) == "f") {
+  Serial.println(req);
+  
+  if (req[5] == 'f') {
     MoveForward();
     Serial.println("For");
   }
 
-  else if (req.at(6) == "b") {
+  else if (req[5] == 'b') {
     MoveBack();
   }
 
-  else if (req.at(6) == "r") {
+  else if (req[5] == 'r') {
     MoveRight();
   }
 
-  else if (req.at(6) == "l") {
+  else if (req[5] == 'l') {
     MoveLeft();
   }
 
@@ -87,8 +89,8 @@ void loop() {
   }
 
   client.flush();
-  client.println("HTTP/1.1 200 OK");
-  Serial.println(req);
+  client.println("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<!DOCTYPE HTML>\r\n<html>\r\OK!</html>\n");
+  delay(1);
 }
 
 

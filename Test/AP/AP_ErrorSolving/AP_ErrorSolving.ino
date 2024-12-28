@@ -37,6 +37,7 @@ void setup() {
   WiFi.mode(WIFI_AP);
   WiFi.softAP(wifiSetup.NAME, wifiSetup.PASS);
   wifiSetup.StatsShow();
+  server.begin();
   
 
   // Готовим Пины
